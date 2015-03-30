@@ -1,6 +1,7 @@
 # socket.io-kafka
 
 [![Build Status](https://travis-ci.org/ghermeto/socket.io-kafka.svg?branch=master)](https://travis-ci.org/ghermeto/socket.io-kafka)
+[![npm version](https://badge.fury.io/js/socket.io-kafka.svg)](http://badge.fury.io/js/socket.io-kafka)
 
 ## How to use
 
