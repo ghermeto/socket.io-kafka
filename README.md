@@ -1,5 +1,7 @@
 # socket.io-kafka
 
+[![Build Status](https://travis-ci.org/ghermeto/socket.io-kafka.svg?branch=master)](https://travis-ci.org/ghermeto/socket.io-kafka)
+
 ## How to use
 
 ```node
@@ -55,12 +57,12 @@ The following options are allowed:
 
 ## Running tests
 
-`npm test` will run `jasmine` with `istanbul` code coverage. The command expects
-the modules to be installed as global.
+`npm test` will first run `jslint` and then will run `jasmine` with `istanbul` 
+code coverage. The command expects the modules to be installed as global.
 
 ## TODO
 
-- add CI (crrently code is linted, tested and coverage is above 85%)
+- ~~add CI~~ (added [Travis CI](https://travis-ci.org))
 - read from multiple partitions
 - allow configuration to set consumer options
 - allow configuration to set compression (currently snappy is hardcoded)

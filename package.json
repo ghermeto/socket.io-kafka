@@ -4,7 +4,7 @@
   "description": "Kafka adapter for socket.io",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover jasmine"
+    "test": "jslint index.js && istanbul cover jasmine"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "istanbul": "^0.3.11",
-    "jasmine": "^2.2.1"
+    "jasmine": "^2.2.1",
+    "jslint": "^0.9.0-pre006"
   }
 }
