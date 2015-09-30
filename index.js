@@ -46,14 +46,14 @@ function adapter(uri, options) {
 
     // create producer and consumer if they weren't provided
     if (!opts.producer || !opts.consumer) {
-       // debug('creating new kafa client');
+        debug('creating new kafa client');
         client = new kafka.Client(uri, opts.clientId, { retries: 2 });
         if (!opts.producer) {
-          //  debug('creating new kafa producer');
+            debug('creating new kafa producer');
             opts.producer = new kafka.Producer(client);
         }
         if (!opts.consumer) {
-          //  debug('creating new kafa consumer');
+            debug('creating new kafa consumer');
             opts.consumer = new kafka.Consumer(client, [], { groupId: prefix });
         }
     }
@@ -79,7 +79,7 @@ function adapter(uri, options) {
         opts.createTopics = (create === undefined) ? true : create;
 
         opts.producer.on('ready', function () {
-            //debug('producer ready');
+            debug('producer ready');
             self.createTopic(self.mainTopic, function (err, data) {
                 if (!err) {
                     self.subscribe(self.mainTopic);
@@ -253,17 +253,19 @@ function adapter(uri, options) {
         var self = this,
             channel;
 
-        debug('broadcasting packet', packet, opts);
+        
         Adapter.prototype.broadcast.call(this, packet, opts);
 
         if (!remote) {
             if (opts.rooms) {
                 opts.rooms.forEach(function (room) {
                     channel = self.safeTopicName(self.mainTopic) + room;
+                    debug('broadcasting to %s',channel);
                     self.publish(channel, packet, opts);
                 });
             } else {
                 channel = self.safeTopicName(self.mainTopic);
+                debug('broadcasting to %s',channel);
                 self.publish(channel, packet, opts);
             }
         }
@@ -291,7 +293,6 @@ function adapter(uri, options) {
         this.rooms[room][id] = true;
         channel = self.safeTopicName(self.mainTopic) + room;
 
-        debug('topic: %s, uid: %s', channel, this.uid);
         /** create the topic as producer and subscribe as a consumer */
         self.createTopic(channel, function (err, data) {
             if (!err) {
