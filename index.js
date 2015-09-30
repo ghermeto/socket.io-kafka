@@ -43,20 +43,22 @@ function adapter(uri, options) {
         uri = opts.uri || opts.host ? opts.host + ':' + opts.port : null;
         if (!uri) { throw new URIError('URI or host/port are required.'); }
     }
-
-    // create producer and consumer if they weren't provided
-    if (!opts.producer || !opts.consumer) {
-        debug('creating new kafa client');
-        client = new kafka.Client(uri, opts.clientId, { retries: 2 });
-        if (!opts.producer) {
-            debug('creating new kafa producer');
-            opts.producer = new kafka.Producer(client);
+    try{
+        // create producer and consumer if they weren't provided
+        if (!opts.producer || !opts.consumer) {
+            debug('creating new kafa client');
+            client = new kafka.Client(uri, opts.clientId, { retries: 2 });
+            if (!opts.producer) {
+                debug('creating new kafa producer');
+                opts.producer = new kafka.Producer(client);
+            }
+            if (!opts.consumer) {
+                debug('creating new kafa consumer');
+                opts.consumer = new kafka.Consumer(client, [], { groupId: prefix });
+            }
         }
-        if (!opts.consumer) {
-            debug('creating new kafa consumer');
-            opts.consumer = new kafka.Consumer(client, [], { groupId: prefix });
-        }
-    }
+    }catch(e){}
+    
     /**
      * Kafka Adapter constructor.
      *
@@ -86,8 +88,6 @@ function adapter(uri, options) {
                 }
 
             });
-            
-
             // handle incoming messages to the channel
             self.consumer.on('message', self.onMessage.bind(self));
             self.consumer.on('error', self.onError.bind(self));
@@ -95,9 +95,8 @@ function adapter(uri, options) {
     }
 
     // inherit from Adapter
-    /*Kafka.prototype = Object.create(Adapter.prototype);
-    Kafka.prototype.constructor = Kafka;*/
-    Kafka.prototype.__proto__ = Adapter.prototype;
+    Kafka.prototype = Object.create(Adapter.prototype);
+    Kafka.prototype.constructor = Kafka;
 
     /**
      * Emits the error.
