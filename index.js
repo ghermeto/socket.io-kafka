@@ -17,7 +17,7 @@
 
 'use strict';
 
-var kafka = require('kafka-node-slim'),
+var kafka = require('kafka-node'),
     Adapter = require('socket.io-adapter'),
     debug = require('debug')('socket.io-kafka'),
     async = require('async'),
